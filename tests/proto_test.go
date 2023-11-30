@@ -32,8 +32,13 @@ func TestPrintProtoUser(t *testing.T) {
 	user.Gender = gen.Gender_Gender_FEMALE
 	user.Password = []byte("tifanniCantik")
 	user.IsActive = true
+	user.Addresses = &gen.Address{
+		City:    "Semarang",
+		Country: "Indonesia",
+		Street:  "Jl Chinchin",
+	}
 
-	fmt.Printf("Original  : %v\n", user)
+	fmt.Printf("Original  : %v\n", &user)
 	fmt.Printf("As String : %v\n", user.String())
 }
 

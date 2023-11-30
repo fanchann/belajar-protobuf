@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package proto_basic;
+option go_package="gen/";
+
+
+import "proto_basic/user.proto";
+
+message UserGroup {
+    User user = 1;
+
+}
