@@ -4,9 +4,12 @@ package proto_basic;
 option go_package="gen/";
 
 
-import "proto_basic/user.proto";
+import "user.proto";
 
 message UserGroup {
-    User user = 1;
-
+    uint32 group_id = 1 [json_name="group_id"];
+    string group_name = 2 [json_name="group_name"];
+    repeated string roles = 3;
+    User user = 4;
+    string description = 16;
 }

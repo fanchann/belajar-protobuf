@@ -99,3 +99,16 @@ func TestUnmarshalJsonToProtoProtoJson(t *testing.T) {
 
 	fmt.Println(protoObj)
 }
+
+func TestPrintJsonGroupUsers(t *testing.T) {
+	groupUsers := gen.UserGroup{
+		GroupId:     1,
+		GroupName:   "Tifanni Fan's",
+		Roles:       []string{"admin", "moderator", "women in tech", "member"},
+		Description: "This group for tifanni fan",
+	}
+
+	jsonResult, err := protojson.Marshal(&groupUsers)
+	assert.Nil(t, err)
+	fmt.Println(string(jsonResult))
+}
