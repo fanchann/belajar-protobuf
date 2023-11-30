@@ -36,6 +36,10 @@ func TestPrintProtoUser(t *testing.T) {
 		City:    "Semarang",
 		Country: "Indonesia",
 		Street:  "Jl Chinchin",
+		Coordinate: &gen.Address_Coordinate{
+			Latitude:  5.2,
+			Longitude: 5.44,
+		},
 	}
 
 	fmt.Printf("Original  : %v\n", &user)
