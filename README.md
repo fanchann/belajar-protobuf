@@ -44,4 +44,59 @@ message User{
 }
 ```
 
+## Import
+- directory app
+```sh
+├── proto
+│   ├── hello.proto
+│   └── world.proto
+```
 
+- hello.proto
+```proto3
+syntax = "proto3";
+
+package hello;
+option go_package="gen/"; // file generated will save in proto/gen/
+
+message Hello{
+	string name = 1;
+};
+```
+
+- world.proto
+```proto3
+syntax = "proto3";
+
+package hello;
+option go_package="gen/"; // file generated will save in proto/gen/
+
+import "hello.proto"
+
+message World{
+	int32 id = 1;
+	Hello hello = 2;
+};
+```
+
+## Nested message
+```proto3
+syntax = "proto3";
+
+package basic
+
+message User{
+	int32 id_user = 1[json_name="id_user"]; // default is IdUser,
+	string name = 2;	
+}
+
+message Address{
+	string city = 1;
+	string country = 2;
+	Coordinate coordinate = 16; // use 1 - 15 for importants fields,
+	message Coordinate{
+		double latitude = 1; // double == float64
+		double longtitude = 2;
+	}
+}
+```
