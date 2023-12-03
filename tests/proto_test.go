@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/fanchann/belajar-protobuf/proto/gen"
+	gen "github.com/fanchann/belajar-protobuf/protogen"
 	"github.com/golang/protobuf/jsonpb"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/encoding/protojson"
