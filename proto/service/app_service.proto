@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package services;
+package service;
 option go_package="protogen/";
 
 message AppsService {

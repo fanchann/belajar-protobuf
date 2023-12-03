@@ -1,19 +1,19 @@
 syntax = "proto3";
 
-package application;
-option go_package = "gen/";
+package protogen;
+option go_package = "protogen/";
 
-import "first/app.proto";
-import "second/app.proto";
+import "jobs/job_service.proto";
+import "service/app_service.proto";
 
 
-message Application {
-    first.app.FirstApplication App = 1;
-    string Description = 2;
+message ApplicationServices {
+   service.AppsService app_service = 1;
+   string description = 2;
 
 }
 
-message JobSoftware {
-    second.app.SecondApplication App = 1;
-    string Description = 2;
+message JobServices {
+   jobs.JobService job_service = 1;
+   string description = 2;
 }
