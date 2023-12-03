@@ -116,3 +116,12 @@ func TestPrintJsonGroupUsers(t *testing.T) {
 	assert.Nil(t, err)
 	fmt.Println(string(jsonResult))
 }
+
+func TestProtocImportFirstAndSecond(t *testing.T) {
+	app :=gen.Application{
+		App: gen.Application{
+			
+		},
+	}
+}
+

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package application;
+option go_package = "gen/";
+
+import "first/app.proto";
+import "second/app.proto";
+
+
+message Application {
+    first.app.FirstApplication App = 1;
+    string Description = 2;
+
+}
+
+message JobSoftware {
+    second.app.SecondApplication App = 1;
+    string Description = 2;
+}
