@@ -3,6 +3,8 @@ syntax = "proto3";
 package protogen;
 option go_package="protogen/";
 
+import "google/protobuf/any.proto";
+
 enum Gender{
     Gender_UNDEFINED = 0;
     Gender_MALE = 1;
@@ -17,6 +19,17 @@ message User{
     repeated string emails = 5;
     Gender gender = 6;
     Address addresses = 7;
+    google.protobuf.Any social_media = 18;
+    oneof allowed_socmed {
+        SocialMedia socmed = 19;
+        InstantMessaging instant_msg = 20;
+    }
+    map<string, Skill> skill_user = 21;
+}
+
+message Skill {
+    string name_skill = 1;
+    uint32 rating_skill = 2;
 }
 
 message Address{
@@ -28,4 +41,16 @@ message Address{
         double latitude = 1;
         double longitude = 2;
     };
+}
+
+message PaperMail {
+    string paper_mail = 1;
+}
+
+message SocialMedia {
+    string social_media = 1;
+}
+
+message InstantMessaging{
+    string instant_messaging = 1;
 }

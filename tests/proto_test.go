@@ -10,6 +10,8 @@ import (
 	"github.com/golang/protobuf/jsonpb"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/anypb"
 )
 
 func TestHelloProto(t *testing.T) {
@@ -21,16 +23,43 @@ func TestHelloProto(t *testing.T) {
 	fmt.Printf("As String : %v\n", hello.String())
 }
 
+func selectInformationChannel(types string) *anypb.Any {
+	var anyPb anypb.Any
+
+	paperMail := protogen.PaperMail{
+		PaperMail: "This is papermail",
+	}
+	socialMedia := protogen.SocialMedia{
+		SocialMedia: "This is social media",
+	}
+	instantMessage := protogen.InstantMessaging{
+		InstantMessaging: "This is instant messaging",
+	}
+
+	switch types {
+	case "papermail":
+		anypb.MarshalFrom(&anyPb, &paperMail, proto.MarshalOptions{})
+	case "socmed", "socialmedia":
+		anypb.MarshalFrom(&anyPb, &socialMedia, proto.MarshalOptions{})
+	case "instantmsg":
+		anypb.MarshalFrom(&anyPb, &instantMessage, proto.MarshalOptions{})
+	default:
+		anypb.MarshalFrom(&anyPb, &instantMessage, proto.MarshalOptions{})
+
+	}
+	return &anyPb
+}
+
 func TestPrintProtoUser(t *testing.T) {
 	var user protogen.User
 
 	user.Id = 1
-	user.Username = "Tifanni Aulia"
+	user.Username = "kaori miyazono"
 	user.Emails = []string{
-		"tifanni@gmail.com",
+		"kaorimiyazono@gmail.com",
 	}
 	user.Gender = protogen.Gender_Gender_FEMALE
-	user.Password = []byte("tifanniCantik")
+	user.Password = []byte("kaorimiyazono")
 	user.IsActive = true
 	user.Addresses = &protogen.Address{
 		City:    "Semarang",
@@ -41,9 +70,24 @@ func TestPrintProtoUser(t *testing.T) {
 			Longitude: 5.44,
 		},
 	}
+	user.SocialMedia = selectInformationChannel("")
+	user.SkillUser = map[string]*protogen.Skill{
+		"basic_skill": &protogen.Skill{
+			NameSkill:   "Nangis",
+			RatingSkill: 3,
+		},
+	}
 
 	fmt.Printf("Original  : %v\n", &user)
 	fmt.Printf("As String : %v\n", user.String())
+
+	// json
+	userJson, err := protojson.Marshal(&user)
+	assert.Nil(t, err)
+
+	fmt.Printf("As Json : %v\n", string(userJson))
+	fmt.Printf("As Byte : %v\n", userJson)
+
 }
 
 // jsonpb as 3party
