@@ -3,6 +3,8 @@ package tests
 import (
 	"bytes"
 	"fmt"
+	"io/fs"
+	"io/ioutil"
 	"strings"
 	"testing"
 
@@ -185,4 +187,51 @@ func TestPrintApplication(t *testing.T) {
 	assert.Nil(t, err)
 
 	fmt.Println(string(appServiceJson))
+}
+
+func TestWriteUserProtoToFile(t *testing.T) {
+	var user protogen.User
+
+	user.Id = 1
+	user.Username = "kaori miyazono"
+	user.Emails = []string{
+		"kaorimiyazono@gmail.com",
+	}
+	user.Gender = protogen.Gender_Gender_FEMALE
+	user.Password = []byte("kaorimiyazono")
+	user.IsActive = true
+	user.Addresses = &protogen.Address{
+		City:    "Semarang",
+		Country: "Indonesia",
+		Street:  "Jl Chinchin",
+		Coordinate: &protogen.Address_Coordinate{
+			Latitude:  5.2,
+			Longitude: 5.44,
+		},
+	}
+	user.SocialMedia = selectInformationChannel("")
+	user.SkillUser = map[string]*protogen.Skill{
+		"basic_skill": &protogen.Skill{
+			NameSkill:   "Nangis",
+			RatingSkill: 3,
+		},
+	}
+
+	protoBytes, err := proto.Marshal(&user)
+	assert.Nil(t, err)
+	err = ioutil.WriteFile("kaori.bin", protoBytes, fs.ModePerm)
+	assert.Nil(t, err)
+
+}
+
+func TestReadBinFileGeneratedFromProtobuf(t *testing.T) {
+	var user protogen.User
+
+	bytes, err := ioutil.ReadFile("kaori.bin")
+	assert.Nil(t, err)
+
+	err = proto.Unmarshal(bytes, &user)
+	assert.Nil(t, err)
+
+	fmt.Println(user)
 }
