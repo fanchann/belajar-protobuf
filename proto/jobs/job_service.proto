@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package jobs;
+option go_package="protogen/";
+
+message JobService {
+    string job_id = 1;
+    string job_name = 2;
+}

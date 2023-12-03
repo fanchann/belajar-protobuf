@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package second.app;
-option go_package="gen/second/";
-
-message SecondApplication {
-    string NameApp = 1;
-    string DescApp = 2;
-}

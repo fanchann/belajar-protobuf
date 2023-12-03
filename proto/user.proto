@@ -1,7 +1,7 @@
 syntax = "proto3";
 
-package proto_basic;
-option go_package="gen/";
+package protogen;
+option go_package="protogen/";
 
 enum Gender{
     Gender_UNDEFINED = 0;

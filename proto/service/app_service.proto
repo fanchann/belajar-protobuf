@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package services;
+option go_package="protogen/";
+
+message AppsService {
+    string app_id = 1;
+    string app_name = 2;
+}

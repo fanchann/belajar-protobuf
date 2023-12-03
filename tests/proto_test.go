@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/fanchann/belajar-protobuf/proto/gen"
+	gen "github.com/fanchann/belajar-protobuf/protogen"
 	"github.com/golang/protobuf/jsonpb"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -29,7 +29,7 @@ func TestPrintProtoUser(t *testing.T) {
 	user.Emails = []string{
 		"tifanni@gmail.com",
 	}
-	user.Gender = gen.Gender_Gender_FEMALE
+	user.Gender = 
 	user.Password = []byte("tifanniCantik")
 	user.IsActive = true
 	user.Addresses = &gen.Address{
@@ -118,10 +118,7 @@ func TestPrintJsonGroupUsers(t *testing.T) {
 }
 
 func TestProtocImportFirstAndSecond(t *testing.T) {
-	app :=gen.Application{
-		App: gen.Application{
-			
-		},
+	app := gen.Application{
+		App: gen.Application{},
 	}
 }
-
