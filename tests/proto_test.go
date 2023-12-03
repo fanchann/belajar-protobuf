@@ -6,14 +6,14 @@ import (
 	"strings"
 	"testing"
 
-	gen "github.com/fanchann/belajar-protobuf/protogen"
+	"github.com/fanchann/belajar-protobuf/protogen"
 	"github.com/golang/protobuf/jsonpb"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
 func TestHelloProto(t *testing.T) {
-	var hello gen.Hello
+	var hello protogen.Hello
 
 	hello.Name = "Tifanni"
 
@@ -22,21 +22,21 @@ func TestHelloProto(t *testing.T) {
 }
 
 func TestPrintProtoUser(t *testing.T) {
-	var user gen.User
+	var user protogen.User
 
 	user.Id = 1
 	user.Username = "Tifanni Aulia"
 	user.Emails = []string{
 		"tifanni@gmail.com",
 	}
-	user.Gender = 
+	user.Gender = protogen.Gender_Gender_FEMALE
 	user.Password = []byte("tifanniCantik")
 	user.IsActive = true
-	user.Addresses = &gen.Address{
+	user.Addresses = &protogen.Address{
 		City:    "Semarang",
 		Country: "Indonesia",
 		Street:  "Jl Chinchin",
-		Coordinate: &gen.Address_Coordinate{
+		Coordinate: &protogen.Address_Coordinate{
 			Latitude:  5.2,
 			Longitude: 5.44,
 		},
@@ -48,7 +48,7 @@ func TestPrintProtoUser(t *testing.T) {
 
 // jsonpb as 3party
 func TestMarshalProtoToJsonJsonPb(t *testing.T) {
-	userDataExample := gen.User{
+	userDataExample := protogen.User{
 		Id:       2,
 		Username: "Tiffani Aulia",
 		Password: []byte("tifanni"),
@@ -69,7 +69,7 @@ func TestUnmarshalJsonToProtoJsonPb(t *testing.T) {
 	jsonStr := `{"id":2,"username":"Tiffani Aulia","is_active":true,"password":"dGlmYW5uaQ==","emails":["tiffani@gmail.com"]}`
 
 	buff := strings.NewReader(jsonStr)
-	protoObj := new(gen.User)
+	protoObj := new(protogen.User)
 
 	err := (&jsonpb.Unmarshaler{}).Unmarshal(buff, protoObj)
 	assert.Nil(t, err)
@@ -79,7 +79,7 @@ func TestUnmarshalJsonToProtoJsonPb(t *testing.T) {
 
 // protojson also 3party
 func TestMarshalProtoToJsonProtoJson(t *testing.T) {
-	userDataExample := gen.User{
+	userDataExample := protogen.User{
 		Id:       2,
 		Username: "Tiffani Aulia",
 		Password: []byte("tifanni"),
@@ -96,7 +96,7 @@ func TestMarshalProtoToJsonProtoJson(t *testing.T) {
 func TestUnmarshalJsonToProtoProtoJson(t *testing.T) {
 	jsonStr := `{"id":2,"username":"Tiffani Aulia","is_active":true,"password":"dGlmYW5uaQ==","emails":["tiffani@gmail.com"]}`
 
-	protoObj := new(gen.User)
+	protoObj := new(protogen.User)
 
 	err := protojson.Unmarshal([]byte(jsonStr), protoObj)
 	assert.Nil(t, err)
@@ -105,7 +105,7 @@ func TestUnmarshalJsonToProtoProtoJson(t *testing.T) {
 }
 
 func TestPrintJsonGroupUsers(t *testing.T) {
-	groupUsers := gen.UserGroup{
+	groupUsers := protogen.UserGroup{
 		GroupId:     1,
 		GroupName:   "Tifanni Fan's",
 		Roles:       []string{"admin", "moderator", "women in tech", "member"},
@@ -117,8 +117,28 @@ func TestPrintJsonGroupUsers(t *testing.T) {
 	fmt.Println(string(jsonResult))
 }
 
-func TestProtocImportFirstAndSecond(t *testing.T) {
-	app := gen.Application{
-		App: gen.Application{},
+func TestPrintApplication(t *testing.T) {
+	appService := protogen.ApplicationServices{
+		AppService: &protogen.AppsService{
+			AppId:   "com.x",
+			AppName: "X",
+		},
+		Description: "This is app service",
 	}
+	jobService := protogen.JobServices{
+		JobService: &protogen.JobService{
+			JobId:   "xxx",
+			JobName: "Romusha",
+		},
+		Description: "This is job service",
+	}
+
+	fmt.Println(appService)
+	fmt.Println(jobService)
+
+	// to json
+	appServiceJson, err := protojson.Marshal(&appService)
+	assert.Nil(t, err)
+
+	fmt.Println(string(appServiceJson))
 }
