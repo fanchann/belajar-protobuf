@@ -1,0 +1,13 @@
+syntax = "proto3";
+package protogen;
+
+option go_package="protogen/";
+
+// this v1
+message UserContent {
+    uint32 user_content_id = 1;
+    string slug = 2;
+    string title = 3;
+    string html_content = 4;
+    uint32 author_id = 5;
+}

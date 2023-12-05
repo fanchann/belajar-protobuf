@@ -4,6 +4,9 @@ package protogen;
 option go_package="protogen/";
 
 import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
+import "google/type/date.proto";
+import "google/type/latlng.proto";
 
 enum Gender{
     Gender_UNDEFINED = 0;
@@ -25,6 +28,9 @@ message User{
         InstantMessaging instant_msg = 20;
     }
     map<string, Skill> skill_user = 21;
+    google.protobuf.Timestamp last_login_user = 22;
+    google.type.Date birth_date = 23;
+    google.type.LatLng last_know_location = 24;
 }
 
 message Skill {
