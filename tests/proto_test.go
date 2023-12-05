@@ -14,6 +14,7 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func TestHelloProto(t *testing.T) {
@@ -78,6 +79,19 @@ func TestPrintProtoUser(t *testing.T) {
 			NameSkill:   "Nangis",
 			RatingSkill: 3,
 		},
+	}
+	user.BirthDate = &protogen.Date{
+		Year:  2003,
+		Month: 12,
+		Day:   26,
+	}
+	user.LastKnowLocation = &protogen.LatLng{
+		Latitude:  113.31212,
+		Longitude: 12.131213,
+	}
+	user.LastLoginUser = &timestamppb.Timestamp{
+		Seconds: 30,
+		Nanos:   12,
 	}
 
 	fmt.Printf("Original  : %v\n", &user)
@@ -219,7 +233,7 @@ func TestWriteUserProtoToFile(t *testing.T) {
 
 	protoBytes, err := proto.Marshal(&user)
 	assert.Nil(t, err)
-	err = ioutil.WriteFile("kaori.bin", protoBytes, fs.ModePerm)
+	err = ioutil.WriteFile("../kaori.bin", protoBytes, fs.ModePerm)
 	assert.Nil(t, err)
 
 }
@@ -227,11 +241,151 @@ func TestWriteUserProtoToFile(t *testing.T) {
 func TestReadBinFileGeneratedFromProtobuf(t *testing.T) {
 	var user protogen.User
 
-	bytes, err := ioutil.ReadFile("kaori.bin")
+	bytes, err := ioutil.ReadFile("../kaori.bin")
 	assert.Nil(t, err)
 
 	err = proto.Unmarshal(bytes, &user)
 	assert.Nil(t, err)
 
 	fmt.Println(user)
+}
+
+func TestWriteProtoToJsonFile(t *testing.T) {
+	var user protogen.User
+
+	user.Id = 1
+	user.Username = "kaori miyazono"
+	user.Emails = []string{
+		"kaorimiyazono@gmail.com",
+	}
+	user.Gender = protogen.Gender_Gender_FEMALE
+	user.Password = []byte("kaorimiyazono")
+	user.IsActive = true
+	user.Addresses = &protogen.Address{
+		City:    "Semarang",
+		Country: "Indonesia",
+		Street:  "Jl Chinchin",
+		Coordinate: &protogen.Address_Coordinate{
+			Latitude:  5.2,
+			Longitude: 5.44,
+		},
+	}
+	user.SocialMedia = selectInformationChannel("")
+	user.SkillUser = map[string]*protogen.Skill{
+		"basic_skill": &protogen.Skill{
+			NameSkill:   "Nangis",
+			RatingSkill: 3,
+		},
+	}
+
+	byteJson, err := protojson.Marshal(&user)
+	assert.Nil(t, err)
+
+	err = ioutil.WriteFile("../user.json", byteJson, fs.ModePerm)
+	assert.Nil(t, err)
+}
+
+func TestReadJsonFileProto(t *testing.T) {
+	var user protogen.User
+
+	fileByte, err := ioutil.ReadFile("../user.json")
+	assert.Nil(t, err)
+
+	err = protojson.Unmarshal(fileByte, &user)
+	assert.Nil(t, err)
+
+	fmt.Println(user)
+}
+
+func TestWriteFileBinUserContentV1(t *testing.T) {
+	userContent := protogen.UserContent{
+		UserContentId: 1,
+		Slug:          "Slug",
+		// Title:         "This is title",
+		HtmlContent: "example",
+		// AuthorId:      10,
+	}
+
+	byteJson, err := protojson.Marshal(&userContent)
+	assert.Nil(t, err)
+
+	ioutil.WriteFile("../userContentv1.bin", byteJson, fs.ModePerm)
+}
+
+func TestReadFileBinUserContentV1(t *testing.T) {
+	var userContent protogen.UserContent
+
+	bytesData, err := ioutil.ReadFile("../userContentv1.bin")
+	assert.Nil(t, err)
+
+	err2 := protojson.Unmarshal(bytesData, &userContent)
+	assert.Nil(t, err2)
+
+	byteJson, err := protojson.Marshal(&userContent)
+	assert.Nil(t, err)
+
+	fmt.Println(string(byteJson))
+}
+
+func TestWriteFileBinUserContentV2(t *testing.T) {
+	userContent := protogen.UserContent{
+		UserContentId: 1,
+		Slug:          "Slug",
+		// Title:         "This is title",
+		HtmlContent: "example",
+		// AuthorId:      10,
+		Category: "example",
+	}
+
+	byteJson, err := protojson.Marshal(&userContent)
+	assert.Nil(t, err)
+
+	ioutil.WriteFile("../userContentv2.bin", byteJson, fs.ModePerm)
+}
+
+func TestReadFileBinUserContentV2(t *testing.T) {
+	var userContent protogen.UserContent
+
+	bytesData, err := ioutil.ReadFile("../userContentv2.bin")
+	assert.Nil(t, err)
+
+	protojson.Unmarshal(bytesData, &userContent)
+	// assert.Nil(t, err2)
+
+	byteJson, err := protojson.Marshal(&userContent)
+	assert.Nil(t, err)
+
+	fmt.Println(string(byteJson))
+}
+
+func TestWriteFileBinUserContentV3(t *testing.T) {
+	userContent := protogen.UserContent{
+		UserContentId: 1,
+		Slug:          "Slug",
+		// Title:         "This is title",
+		HtmlContent: "example",
+		// AuthorId:      10,
+		Category: "example",
+		Bio:      "This is bio",
+	}
+
+	byteJson, err := protojson.Marshal(&userContent)
+	assert.Nil(t, err)
+
+	ioutil.WriteFile("../userContentv3.bin", byteJson, fs.ModePerm)
+}
+
+func TestReadFileBinUserContentV3(t *testing.T) {
+	var userContent protogen.UserContent
+
+	bytesData, err := ioutil.ReadFile("../userContentv3.bin")
+	assert.Nil(t, err)
+
+	err2 := protojson.Unmarshal(bytesData, &userContent)
+	assert.Nil(t, err2)
+
+	byteJson, err := protojson.Marshal(&userContent)
+	assert.Nil(t, err)
+
+	fmt.Println(string(byteJson))
 }
